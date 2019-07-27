@@ -1,0 +1,58 @@
+/*
+Given N activities with their start and finish times. Select the maximum 
+number of activities that can be performed by a single person, assuming that 
+a person can only work on a single activity at a time.
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct activity
+{
+    int start;
+    int end;
+};
+
+bool comparator(struct activity a, struct activity b)
+{
+    return (a.end < b.end);
+}
+
+int activitySelection(int s[], int f[], int n)
+{
+    int count = 1;
+    struct activity arr[n];
+    for(int i = 0; i < n; i++) {
+        arr[i].start = s[i];
+        arr[i].end = f[i];
+    }
+    
+    sort(arr, arr+n, comparator);
+    int bound_time = arr[0].end;
+    
+    for(int i = 1; i < n; i++) {
+        if(arr[i].start >= bound_time) {
+            count++;
+            bound_time = arr[i].end;
+        }
+    }
+    
+    return count;
+    
+}
+
+int main() {
+    int n;
+    cin >> n;
+    int s[n], f[n];
+    for(int i = 0; i < n; i++) {
+        cin >> s[i];
+    }
+    for(int i =  0; i < n; i++) {
+        cin >> f[i];
+    }
+    
+    cout << activitySelection(s, f, n) << endl;
+
+	return 0;
+}
