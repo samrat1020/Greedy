@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node 
+{
+    float val;
+    float we;
+    float rate;
+};
+
+bool comparator(struct node p1, struct node p2) {
+    return p1.rate > p2.rate;
+}
+
+float knapsack(int n, int w, float value[], float weight[])
+{
+    float sum = 0;
+    struct node data[n];
+    for(int i = 0; i < n; i++) {
+        data[i].val = value[i];
+        data[i].we = weight[i];
+        data[i].rate = value[i]/weight[i];
+    }
+    
+    sort(data, data+n, comparator);
+    for(int i = 0; i < n; i++) {
+        if(w == 0) {
+            return sum;
+        }
+        if(data[i].we < w) {
+            sum = sum + data[i].val;
+            w = w - data[i].we;
+        } else {
+            sum = sum + data[i].rate * w;
+            w = 0;
+        }
+    }
+    
+    return sum;
+    
+}
+
+int main()
+{
+    int n, w;
+    cin >> n >> w;
+    float value[n];
+    float weight[n];
+    for(int i = 0; i < n; i++) {
+        cin >> value[i];
+        cin >> weight[i];
+    }
+    
+    printf("%.2f\n", knapsack(n, w, value, weight));
+
+	return 0;
+}
